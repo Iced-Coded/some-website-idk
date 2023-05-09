@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($row !== null) {
         $pswrd_c = $row['password'];
     } else {
-        $error = $username/*"User not found!"*/;
+        $error = "User not found!";
         Header('Location: ../log-in.php?error='.$error);
         exit();
     }
@@ -38,12 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Successful log in
         echo("Success!");
     } else {
-        /*$error = "Wrong Password!";
+        $error = "Wrong Password!";
         Header('Location: ../log-in.php?error='.$error);
-        exit();*/
-
-        echo $pswrd_c."<br>";
-        echo $pswrd;
+        exit();
     }
 }
 
