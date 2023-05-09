@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         Header('Location: ../log-in.php?error='.$error);
         exit();
     } else {
-        $username = data_handle($username);
+        $username = data_handle($_POST['username']);
     }
 
     if (empty($_POST['pass1'])) {
@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         Header('Location: ../log-in.php?error='.$error);
         exit();
     } else {
-        $pswrd = data_handle($_POST['pass1']);
+        $pswrd = md5(data_handle($_POST['pass1']));
     }
 
     require_once("cfg.php");
@@ -29,19 +29,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($row !== null) {
         $pswrd_c = $row['password'];
     } else {
-        $error = "User not found!";
+        $error = $username/*"User not found!"*/;
         Header('Location: ../log-in.php?error='.$error);
         exit();
     }
 
-    if (password_verify($pswrd, $pswrd_c)) {
+    if ($pswrd_c === $pswrd) {
         // Successful log in
         echo("Success!");
-        exit();
     } else {
-        $error = "Wrong password!";
-        echo $pswrd_c;
-        exit();
+        /*$error = "Wrong Password!";
+        Header('Location: ../log-in.php?error='.$error);
+        exit();*/
+
+        echo $pswrd_c."<br>";
+        echo $pswrd;
     }
 }
 

@@ -76,16 +76,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pswrd_c = md5($pswrd_c);
     }
 
-    require_once('cfg.php');
+    require('cfg.php');
 
     $sql = "INSERT INTO users (id, full_name, username, email, password)
             VALUES ('', '$fname', '$uname', '$email', '$pswrd')";
 
-    if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully";
+    $sql2 = $conn->prepare("SELECT username, email FROM users WHERE username = ?");
+    $sql2->bind_param("s", $username);
+    $sql2->execute();
+
+    $result = $sql2->get_result();
+    $row = $result->fetch_assoc();
+
+    if ($row == null) {
+        echo "This email/username is already registered!";
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        if ($conn->query($sql) === TRUE) {
+            echo "New record created successfully";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
     }
+
+    $conn->close();
 }
 
 function data_handle($data) {
