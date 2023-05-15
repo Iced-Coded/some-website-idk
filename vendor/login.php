@@ -1,5 +1,4 @@
 <?php
-session_start()
 $username = $pswrd = "";
 if (!empty($_COOKIE["username"])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -40,8 +39,9 @@ if (!empty($_COOKIE["username"])) {
             setcookie("full_name", $row['full_name'], time() + (86400 * 30), "/");
             setcookie("email", $row['email'], time() + (86400 * 30), "/");
             setcookie("password", $pswrd_c, time() + (86400 * 30), "/");
-            header("Location: ../profile.php");
-            exit();
+            print_r($_COOKIE);
+            #header("Location: ../profile.php");
+            #exit();
         } else {
             $error = "Wrong Password!";
             Header('Location: ../log-in.php?error='.$error);
